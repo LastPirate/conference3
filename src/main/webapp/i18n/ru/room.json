@@ -1,0 +1,22 @@
+{
+    "conference3App": {
+        "room" : {
+            "home": {
+                "title": "Rooms",
+                "createLabel": "Создать новый Room",
+                "createOrEditLabel": "Создать или отредактировать Room"
+            },
+            "created": "Новый Room создан с идентификатором {{ param }}",
+            "updated": "Room обновлен с идентификатором {{ param }}",
+            "deleted": "Room удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Room {{ id }}?"
+            },
+            "detail": {
+                "title": "Room"
+            },
+            "number": "Number",
+            "event": "Event"
+        }
+    }
+}

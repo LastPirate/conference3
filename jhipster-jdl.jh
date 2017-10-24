@@ -1,0 +1,35 @@
+entity Presentation{
+	id Integer,
+    title String required,
+    discription String
+}
+
+entity Visit{
+	presenterStatus Boolean
+}
+
+entity Room{
+	id Integer,
+    number Integer required
+}
+
+entity Event{
+	id Integer, 
+    start ZonedDateTime required,
+    end ZonedDateTime required
+}
+
+relationship OneToMany{
+    Room{event} to Event{room(number)},
+    Presentation{event} to Event{presentation(title)},
+    Event{visit} to Visit{event}
+}
+
+relationship ManyToOne{
+	Visit{user(login)} to User{visit}
+}
+
+paginate * with infinite-scroll
+
+
+#fontSize: 5

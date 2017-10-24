@@ -1,0 +1,23 @@
+{
+    "conference3App": {
+        "visit" : {
+            "home": {
+                "title": "Visits",
+                "createLabel": "Создать новый Visit",
+                "createOrEditLabel": "Создать или отредактировать Visit"
+            },
+            "created": "Новый Visit создан с идентификатором {{ param }}",
+            "updated": "Visit обновлен с идентификатором {{ param }}",
+            "deleted": "Visit удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Visit {{ id }}?"
+            },
+            "detail": {
+                "title": "Visit"
+            },
+            "presenterStatus": "Presenter Status",
+            "user": "User",
+            "event": "Event"
+        }
+    }
+}
