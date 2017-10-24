@@ -2,22 +2,22 @@
     "conference3App": {
         "visit" : {
             "home": {
-                "title": "Visits",
-                "createLabel": "Создать новый Visit",
+                "title": "Посещения",
+                "createLabel": "Создать новое посещение",
                 "createOrEditLabel": "Создать или отредактировать Visit"
             },
-            "created": "Новый Visit создан с идентификатором {{ param }}",
-            "updated": "Visit обновлен с идентификатором {{ param }}",
-            "deleted": "Visit удален с идентификатором {{ param }}",
+            "created": "Новое посещение создано с идентификатором {{ param }}",
+            "updated": "Посещение обновлено с идентификатором {{ param }}",
+            "deleted": "Посещение удалено с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Visit {{ id }}?"
+                "question": "Вы уверены что хотите удалить посещение {{ id }}?"
             },
             "detail": {
-                "title": "Visit"
+                "title": "Посещение"
             },
-            "presenterStatus": "Presenter Status",
-            "user": "User",
-            "event": "Event"
+            "presenterStatus": "Докладчик",
+            "user": "Пользователь",
+            "event": "Событие"
         }
     }
 }

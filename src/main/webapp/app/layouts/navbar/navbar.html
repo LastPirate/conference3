@@ -16,8 +16,20 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ui-sref-active="active">
                     <a ui-sref="home" ng-click="vm.collapseNavbar()">
-                        <span class="glyphicon glyphicon-home"></span>
-                        <span class="hidden-sm" data-translate="global.menu.home">Home</span>
+                        <span class="glyphicon glyphicon-paperclip"></span>
+                        <span class="hidden-sm" data-translate="global.menu.home">Schedule</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="join" ng-click="vm.collapseNavbar()">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span class="hidden-sm" data-translate="global.menu.join">Join</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="my-perfomances" ng-click="vm.collapseNavbar()">
+                        <span class="glyphicon glyphicon-briefcase"></span>
+                        <span class="hidden-sm" data-translate="global.menu.my-perfomances">My Perfomances</span>
                     </a>
                 </li>
                 <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->

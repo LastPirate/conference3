@@ -2,21 +2,21 @@
     "conference3App": {
         "room" : {
             "home": {
-                "title": "Rooms",
-                "createLabel": "Создать новый Room",
-                "createOrEditLabel": "Создать или отредактировать Room"
+                "title": "Аудитории",
+                "createLabel": "Создать новую аудиторию",
+                "createOrEditLabel": "Создать или отредактировать аудиторию"
             },
-            "created": "Новый Room создан с идентификатором {{ param }}",
-            "updated": "Room обновлен с идентификатором {{ param }}",
-            "deleted": "Room удален с идентификатором {{ param }}",
+            "created": "Новая аудитория создана с идентификатором {{ param }}",
+            "updated": "Аудитория обновлена с идентификатором {{ param }}",
+            "deleted": "Аудитория удалена с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Room {{ id }}?"
+                "question": "Вы уверены что хотите удалить аудиторию {{ id }}?"
             },
             "detail": {
-                "title": "Room"
+                "title": "Аудитория"
             },
-            "number": "Number",
-            "event": "Event"
+            "number": "Номер",
+            "event": "Событие"
         }
     }
 }

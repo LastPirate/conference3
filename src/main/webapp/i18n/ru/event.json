@@ -2,24 +2,24 @@
     "conference3App": {
         "event" : {
             "home": {
-                "title": "Events",
-                "createLabel": "Создать новый Event",
-                "createOrEditLabel": "Создать или отредактировать Event"
+                "title": "События",
+                "createLabel": "Создать новое событие",
+                "createOrEditLabel": "Создать или отредактировать событие"
             },
-            "created": "Новый Event создан с идентификатором {{ param }}",
-            "updated": "Event обновлен с идентификатором {{ param }}",
-            "deleted": "Event удален с идентификатором {{ param }}",
+            "created": "Новое событие создано с идентификатором {{ param }}",
+            "updated": "событие обновлено с идентификатором {{ param }}",
+            "deleted": "событие удалено с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Event {{ id }}?"
+                "question": "Вы уверены что хотите удалить событие {{ id }}?"
             },
             "detail": {
-                "title": "Event"
+                "title": "Событие"
             },
-            "start": "Start",
-            "end": "End",
-            "visit": "Visit",
-            "room": "Room",
-            "presentation": "Presentation"
+            "start": "Начало",
+            "end": "Окончание",
+            "visit": "Посещение",
+            "room": "Аудитория",
+            "presentation": "Презентация"
         }
     }
 }

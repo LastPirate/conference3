@@ -16,10 +16,10 @@
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
             <tr ng-repeat="event in vm.events track by event.id">
                 <td>
-                    <a ui-sref="room-detail({id:event.room.id})">{{event.room.number}}</a>
+                    <a ui-sref="room-view({id:event.room.id})">{{event.room.number}}</a>
                 </td>
                 <td>
-                    <a ui-sref="presentation-detail({id:event.presentation.id})">{{event.presentation.title}}</a>
+                    <a ui-sref="presentation-view({id:event.presentation.id})">{{event.presentation.title}}</a>
                 </td>
                 <td>{{event.start | date:'medium'}}</td>
                 <td>{{event.end | date:'medium'}}</td>

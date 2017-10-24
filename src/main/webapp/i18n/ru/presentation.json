@@ -2,22 +2,22 @@
     "conference3App": {
         "presentation" : {
             "home": {
-                "title": "Presentations",
-                "createLabel": "Создать новый Presentation",
-                "createOrEditLabel": "Создать или отредактировать Presentation"
+                "title": "Презентации",
+                "createLabel": "Создать новую презентацию",
+                "createOrEditLabel": "Создать или отредактировать презентацию"
             },
-            "created": "Новый Presentation создан с идентификатором {{ param }}",
-            "updated": "Presentation обновлен с идентификатором {{ param }}",
-            "deleted": "Presentation удален с идентификатором {{ param }}",
+            "created": "Новая презентация создана с идентификатором {{ param }}",
+            "updated": "Презентация обновлена с идентификатором {{ param }}",
+            "deleted": "Презентация удалена с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Presentation {{ id }}?"
+                "question": "Вы уверены что хотите удалить презентацию {{ id }}?"
             },
             "detail": {
-                "title": "Presentation"
+                "title": "Презентация"
             },
-            "title": "Title",
-            "discription": "Discription",
-            "event": "Event"
+            "title": "Тема",
+            "discription": "Описание",
+            "event": "Событие"
         }
     }
 }
