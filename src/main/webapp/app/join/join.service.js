@@ -1,50 +1,26 @@
-(function () {
+(function() {
     'use strict';
-
     angular
         .module('conference3App')
-        .factory('JoinService', JoinService);
+        .factory('Visit', Visit);
 
-    JoinService.$inject = ['$resource'];
+    Visit.$inject = ['$resource'];
 
-    function JoinService($resource) {
-        var service = {
-            getOrdinalIndicator: getOrdinalIndicator
-        };
+    function Visit ($resource) {
+        var resourceUrl =  'api/visits/:id';
 
-        return service;
-
-        function getOrdinalIndicator(n) {
-
-            if (n || n === 0) {
-
-                if (hasANonGenericOrdinalIndicator(n)) {
-                    return 'th';
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
                 }
-
-                var decimal = n % 10;
-                switch (decimal) {
-                    case 1:
-                        return 'st';
-                        break;
-                    case 2:
-                        return 'nd';
-                        break;
-                    case 3:
-                        return 'rd';
-                        break;
-                    default:
-                        return 'th';
-                        break;
-                }
-            }
-
-            return '';
-        }
-
-        function hasANonGenericOrdinalIndicator(n) {
-            var lastTwoDigits = n % 100;
-            return lastTwoDigits > 10 && lastTwoDigits < 14;
-        }
+            },
+            'update': { method:'PUT' }
+        });
     }
 })();

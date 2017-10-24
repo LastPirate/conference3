@@ -12,22 +12,27 @@
             parent: 'app',
             url: '/join',
             data: {
-                authorities: [],
-                pageTitle: 'global.menu.join'
+                authorities: ['ROLE_USER']
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/join/join.html',
-                    controller: 'JoinController',
+                    templateUrl: 'app/entities/visit/visit-dialog.html',
+                    controller: 'JoinDialogController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('join');
+                    $translatePartialLoader.addPart('visit');
                     return $translate.refresh();
-                }]
+                }],
+                entity: function () {
+                    return {
+                        presenterStatus: null,
+                        id: null
+                    };
+                }
             }
-        });
+        })
     }
 })();

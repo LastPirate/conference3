@@ -1,31 +1,65 @@
-(function () {
+(function() {
     'use strict';
 
     angular
         .module('conference3App')
         .controller('JoinController', JoinController);
 
-    JoinController.$inject = ['$scope', 'JoinService'];
+    JoinController.$inject = ['Visit', 'ParseLinks', 'AlertService', 'paginationConstants'];
 
-    function JoinController($scope, JoinService) {
+    function JoinController(Visit, ParseLinks, AlertService, paginationConstants) {
+
         var vm = this;
 
-        $scope.controllerMessage = todayToString();
+        vm.visits = [];
+        vm.loadPage = loadPage;
+        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.page = 0;
+        vm.links = {
+            last: 0
+        };
+        vm.predicate = 'id';
+        vm.reset = reset;
+        vm.reverse = true;
 
-        vm.todayToString = todayToString;
+        loadAll();
 
-        function todayToString() {
-            var today = new Date();
-            var dayName = today.toLocaleString('en-us', {weekday: 'long'});
-            var monthName = today.toLocaleString('en-us', {month: 'long'});
-            var date = today.getDate();
+        function loadAll () {
+            Visit.query({
+                page: vm.page,
+                size: vm.itemsPerPage,
+                sort: sort()
+            }, onSuccess, onError);
+            function sort() {
+                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+                if (vm.predicate !== 'id') {
+                    result.push('id');
+                }
+                return result;
+            }
 
-            return 'Today is ' + dayName + ', the ' + dateWithOrdinal(date) + ' of ' + monthName + ', ' + today.getFullYear();
+            function onSuccess(data, headers) {
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                for (var i = 0; i < data.length; i++) {
+                    vm.visits.push(data[i]);
+                }
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
         }
 
-        function dateWithOrdinal(date) {
-            return date + JoinService.getOrdinalIndicator(date);
+        function reset () {
+            vm.page = 0;
+            vm.visits = [];
+            loadAll();
         }
 
+        function loadPage(page) {
+            vm.page = page;
+            loadAll();
+        }
     }
 })();
