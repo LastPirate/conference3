@@ -12,7 +12,7 @@
             parent: 'app',
             url: '/',
             data: {
-                authorities: []
+                pageTitle: 'conference3App.event.home.title'
             },
             views: {
                 'content@': {
@@ -22,11 +22,12 @@
                 }
             },
             resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
-                    $translatePartialLoader.addPart('home');
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('event');
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
-        });
+        })
     }
 })();
