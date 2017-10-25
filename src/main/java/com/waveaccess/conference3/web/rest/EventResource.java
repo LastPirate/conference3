@@ -12,6 +12,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,13 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 /**
  * REST controller for managing Event.
@@ -49,6 +55,10 @@ public class EventResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new event, or with status 400 (Bad Request) if the event has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
+
+    private ZonedDateTime currentStart, currentStop, pastStart, pastStop;
+    private boolean isCorrect;
+
     @PostMapping("/events")
     @Timed
     public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) throws URISyntaxException {
@@ -56,10 +66,29 @@ public class EventResource {
         if (event.getId() != null) {
             throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Event result = eventRepository.save(event);
-        return ResponseEntity.created(new URI("/api/events/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        isCorrect = true;
+        List<Event> all = eventRepository.findAll();
+        for (Event partAll : all) {
+            if (event.getRoom().getNumber() == partAll.getRoom().getNumber()) {
+
+                currentStart = event.getStart().withZoneSameInstant(ZoneId.of("Z"));
+                currentStop = event.getEnd().withZoneSameInstant(ZoneId.of("Z"));
+                pastStart = partAll.getStart().withZoneSameInstant(ZoneId.of("Z"));
+                pastStop = partAll.getEnd().withZoneSameInstant(ZoneId.of("Z"));
+
+                if ((currentStart.isAfter(pastStart) && currentStart.isBefore(pastStop)) |
+                    (currentStop.isAfter(pastStart) && currentStop.isBefore(pastStop))) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+        }
+        if (isCorrect) {
+            Event result = eventRepository.save(event);
+            return ResponseEntity.created(new URI("/api/events/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        } else throw new BadRequestAlertException("This audience is already busy at this time", ENTITY_NAME, "idexists");
     }
 
     /**
