@@ -89,7 +89,7 @@
             }]
         })
         .state('presentation.new', {
-            parent: 'presentation',
+            parent: 'my-perfomances',
             url: '/new',
             data: {
                 authorities: ['ROLE_USER']
@@ -111,14 +111,14 @@
                         }
                     }
                 }).result.then(function() {
-                    $state.go('presentation', null, { reload: 'presentation' });
+                    $state.go('^', null, { reload: true });
                 }, function() {
-                    $state.go('presentation');
+                    $state.go('^');
                 });
             }]
         })
         .state('presentation.edit', {
-            parent: 'presentation',
+            parent: 'my-perfomances',
             url: '/{id}/edit',
             data: {
                 authorities: ['ROLE_USER']
@@ -136,14 +136,14 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('presentation', null, { reload: 'presentation' });
+                    $state.go('^', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
         .state('presentation.delete', {
-            parent: 'presentation',
+            parent: 'my-perfomances',
             url: '/{id}/delete',
             data: {
                 authorities: ['ROLE_USER']
@@ -160,7 +160,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('presentation', null, { reload: 'presentation' });
+                    $state.go('^', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });

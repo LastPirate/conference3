@@ -1,4 +1,8 @@
 <div>
+
+    <div ng-controller="RoomController">
+        <div></div>
+    </div>
     <h2 data-translate="conference3App.event.home.title">Events</h2>
     <jhi-alert></jhi-alert>
     <br/>
@@ -16,10 +20,10 @@
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
             <tr ng-repeat="event in vm.events track by event.id">
                 <td>
-                    <a ui-sref="room-view({id:event.room.id})">{{event.room.number}}</a>
+                    <div ui-sref="presentation-view({id:event.presentation.id})">{{event.presentation.title}}</div>
                 </td>
                 <td>
-                    <a ui-sref="presentation-view({id:event.presentation.id})">{{event.presentation.title}}</a>
+                    <div ui-sref="room-view({id:event.room.id})">{{event.room.number}}</div>
                 </td>
                 <td>{{event.start | date:'medium'}}</td>
                 <td>{{event.end | date:'medium'}}</td>

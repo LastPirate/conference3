@@ -17,7 +17,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: './app/my-perfomances/my-perfomances.html',
+                    templateUrl: 'app/my-perfomances/my-perfomances.html',
                 },
                 'forEvent@my-perfomances': {
                     controller: 'EventController',

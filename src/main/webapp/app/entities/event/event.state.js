@@ -89,8 +89,8 @@
             }]
         })
         .state('event.new', {
-            parent: 'event',
-            url: '/new',
+            parent: 'my-perfomances',
+            url: '/event/new',
             data: {
                 authorities: ['ROLE_USER']
             },
@@ -111,15 +111,15 @@
                         }
                     }
                 }).result.then(function() {
-                    $state.go('event', null, { reload: 'event' });
+                    $state.go('^', null, { reload: true });
                 }, function() {
-                    $state.go('event');
+                    $state.go('^');
                 });
             }]
         })
         .state('event.edit', {
-            parent: 'event',
-            url: '/{id}/edit',
+            parent: 'my-perfomances',
+            url: '/event/{id}/edit',
             data: {
                 authorities: ['ROLE_USER']
             },
@@ -136,15 +136,15 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('event', null, { reload: 'event' });
+                    $state.go('^', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
         .state('event.delete', {
-            parent: 'event',
-            url: '/{id}/delete',
+            parent: 'my-perfomances',
+            url: '/event/{id}/delete',
             data: {
                 authorities: ['ROLE_USER']
             },
@@ -160,7 +160,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('event', null, { reload: 'event' });
+                    $state.go('^', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });
