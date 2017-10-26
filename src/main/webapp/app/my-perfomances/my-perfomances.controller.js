@@ -1,31 +1,13 @@
-(function () {
+(function() {
     'use strict';
 
     angular
         .module('conference3App')
         .controller('MyPerfomancesController', MyPerfomancesController);
 
-    MyPerfomancesController.$inject = ['$scope', 'MyPerfomancesService'];
+    MyPerfomancesController.$inject = ['ParseLinks', 'AlertService', 'paginationConstants'];
 
-    function MyPerfomancesController($scope, MyPerfomancesService) {
-        var vm = this;
-
-        $scope.controllerMessage = todayToString();
-
-        vm.todayToString = todayToString;
-
-        function todayToString() {
-            var today = new Date();
-            var dayName = today.toLocaleString('en-us', {weekday: 'long'});
-            var monthName = today.toLocaleString('en-us', {month: 'long'});
-            var date = today.getDate();
-
-            return 'Today is ' + dayName + ', the ' + dateWithOrdinal(date) + ' of ' + monthName + ', ' + today.getFullYear();
-        }
-
-        function dateWithOrdinal(date) {
-            return date + MyPerfomancesService.getOrdinalIndicator(date);
-        }
+    function MyPerfomancesController(paginationConstants) {
 
     }
 })();

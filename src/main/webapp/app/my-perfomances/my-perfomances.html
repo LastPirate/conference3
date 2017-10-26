@@ -1,130 +1,16 @@
 <div>
-    <div class="btn-group">
-        <button type="button" class="btn btn-primary" ng-click="showEvents = !showEvents; showPress = !showPress">My Events/Presentations</button>
+    <div class="btn-group" data-toggle="buttons">
+        <button type="button" class="btn btn-primary" ng-click="hEv = !hEv">My Events</button>
+        <button type="button" class="btn btn-primary" ng-click="sPr = !sPr">Presentations</button>
     </div>
 
-    <div ui-view="events" ng-hide="showEvents">
-        <h2 data-translate="conference3App.event.home.title">Events</h2>
-        <jhi-alert></jhi-alert>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-4 no-padding-left">
-                    <button class="btn btn-primary" ui-sref="event.new" >
-                        <span class="glyphicon glyphicon-plus"></span>
-                        <span  data-translate="conference3App.event.home.createLabel">
-                        Create new Event
-                    </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="table-responsive">
-            <table class="jh-table table table-striped">
-                <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="start"><span data-translate="conference3App.event.start">Start</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="end"><span data-translate="conference3App.event.end">End</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="room.number"><span data-translate="conference3App.event.room">Room</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="presentation.title"><span data-translate="conference3App.event.presentation">Presentation</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="event in vm.events track by event.id">
-                    <td><a ui-sref="event-detail({id:event.id})">{{event.id}}</a></td>
-                    <td>{{event.start | date:'medium'}}</td>
-                    <td>{{event.end | date:'medium'}}</td>
-                    <td>
-                        <a ui-sref="room-detail({id:event.room.id})">{{event.room.number}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="presentation-detail({id:event.presentation.id})">{{event.presentation.title}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="event-detail({id:event.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="event.edit({id:event.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="event.delete({id:event.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div ng-hide="hEv" ui-view="forEvent">
+        <div ng-include="'app/entities/event/events.html'"></div>
     </div>
-    <div ui-view="press" ng-show="showPress">
-        <h2 data-translate="conference3App.presentation.home.title">Presentations</h2>
-        <jhi-alert></jhi-alert>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-4 no-padding-left">
-                    <button class="btn btn-primary" ui-sref="presentation.new" >
-                        <span class="glyphicon glyphicon-plus"></span>
-                        <span  data-translate="conference3App.presentation.home.createLabel">
-                        Create new Presentation
-                    </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="table-responsive">
-            <table class="jh-table table table-striped">
-                <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="title"><span data-translate="conference3App.presentation.title">Title</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="discription"><span data-translate="conference3App.presentation.discription">Discription</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="presentation in vm.presentations track by presentation.id">
-                    <td><a ui-sref="presentation-detail({id:presentation.id})">{{presentation.id}}</a></td>
-                    <td>{{presentation.title}}</td>
-                    <td>{{presentation.discription}}</td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="presentation-detail({id:presentation.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="presentation.edit({id:presentation.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="presentation.delete({id:presentation.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+
+    <div ng-show="sPr" ui-view="forPresentation">
+        <div ng-include="'app/entities/presentation/presentations.html'"></div>
     </div>
+
 </div>
+

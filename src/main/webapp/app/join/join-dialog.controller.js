@@ -36,7 +36,7 @@
         function onSaveSuccess (result) {
             $scope.$emit('conference3App:visitUpdate', result);
             vm.isSaving = false;
-            $state.go('home', null, { reload: 'visit' });
+            $state.go('join', null, { reload: 'visit' });
         }
 
         function onSaveError () {

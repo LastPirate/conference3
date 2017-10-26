@@ -17,7 +17,7 @@
             views: {
                 'content@': {
                     templateUrl: 'app/home/home.html',
-                    controller: 'HomeController',
+                    controller: 'EventController',
                     controllerAs: 'vm'
                 }
             },

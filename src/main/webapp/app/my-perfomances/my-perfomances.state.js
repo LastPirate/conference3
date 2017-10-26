@@ -9,30 +9,33 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-            .state('my-perfomances', {
-                parent: 'app',
-                url: '/my-perfomances',
-                data: {
-                    authorities: ['ROLE_ADMIN','ROLE_PRESENTER'],
-                    pageTitle: 'conference3App.event.home.title'
+        .state('my-perfomances', {
+            parent: 'app',
+            url: '/my-perfomances',
+            data: {
+                authorities: ['ROLE_USER'],
+            },
+            views: {
+                'content@': {
+                    templateUrl: './app/my-perfomances/my-perfomances.html',
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/my-perfomances/my-perfomances.html',
-                        controller: 'EventController',
-                    },
-                    'press@my-perfomances': {
-                        templateUrl: 'app/entities/presentation/presentations.html',
-                        controller: 'PresentationsController',
-                    }
+                'forEvent@my-perfomances': {
+                    controller: 'EventController',
+                    controllerAs: 'vm'
                 },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('event');
-                        $translatePartialLoader.addPart('global');
-                        return $translate.refresh();
-                    }]
+                'forPresentation@my-perfomances': {
+                    controller: 'PresentationController',
+                    controllerAs: 'vm'
                 }
-            })
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('event');
+                    $translatePartialLoader.addPart('presentation');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
     }
 })();
