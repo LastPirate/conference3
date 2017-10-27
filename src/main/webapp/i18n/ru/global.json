@@ -5,7 +5,7 @@
         "menu": {
             "home": "График",
             "join": "Присоединиться",
-            "my-perfomances": "Мои выступления",
+            "my-perfomances": "Мои конференции",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Сущности",
@@ -93,7 +93,7 @@
             "cancel": "Отмена",
             "delete": "Удалить",
             "edit": "Изменить",
-            "open": "Open",
+            "open": "Открыть",
             "save": "Сохранить",
             "view": "Просмотр"
         },

@@ -3,6 +3,7 @@
         "room" : {
             "home": {
                 "title": "Rooms",
+                "subtitle": "My Room",
                 "createLabel": "Create a new Room",
                 "createOrEditLabel": "Create or edit a Room"
             },

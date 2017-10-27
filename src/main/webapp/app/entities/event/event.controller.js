@@ -22,6 +22,11 @@
         vm.reset = reset;
         vm.reverse = true;
 
+        vm.currentEvents = getCurrentUserEvents.get(function (result) {
+                console.log(result)
+            }
+        );
+
         loadAll();
 
         function loadAll () {
@@ -61,10 +66,5 @@
             vm.page = page;
             loadAll();
         }
-
-        getCurrentUserEvents.get(function (result) {
-                console.log(result)
-            }
-        );
     }
 })();

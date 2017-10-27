@@ -1,9 +1,9 @@
 <div>
     <div>
-        <h4>My room: <input type="text" ng-model="roomFilter.number"> </h4>
+        <h4><span data-translate="conference3App.room.home.subtitle">My Room</span>: <input type="text" ng-model="roomFilter.number"> </h4>
         <div ng-repeat="room in rm.rooms | filter: roomFilter">
             <div ui-view="viewEvent">
-                <h2>Room №{{room.number}}</h2>
+                <h2><span data-translate="conference3App.room.detail.title">Room</span> №{{room.number}}</h2>
                 <br/>
                 <div class="table-responsive">
                     <table class="jh-table table table-striped">
