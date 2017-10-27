@@ -10,7 +10,6 @@
                         <thead>
                         <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                             <th jh-sort-by="presentation.title"><span data-translate="conference3App.event.presentation">Presentation</span> <span class="glyphicon glyphicon-sort"></span></th>
-                            <th jh-sort-by="room.number"><span data-translate="conference3App.event.room">Room</span> <span class="glyphicon glyphicon-sort"></span></th>
                             <th jh-sort-by="start"><span data-translate="conference3App.event.start">Start</span> <span class="glyphicon glyphicon-sort"></span></th>
                             <th jh-sort-by="end"><span data-translate="conference3App.event.end">End</span> <span class="glyphicon glyphicon-sort"></span></th>
                         </tr>
@@ -19,9 +18,6 @@
                         <tr ng-repeat="event in vm.events | filter: room.number">
                             <td>
                                 <div ui-sref="presentation-view({id:event.presentation.id})">{{event.presentation.title}}</div>
-                            </td>
-                            <td>
-                                <div ui-sref="room-view({id:event.room.id})">{{event.room.number}}</div>
                             </td>
                             <td>{{event.start | date:'medium'}}</td>
                             <td>{{event.end | date:'medium'}}</td>
