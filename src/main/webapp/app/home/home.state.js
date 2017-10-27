@@ -17,9 +17,13 @@
             views: {
                 'content@': {
                     templateUrl: 'app/home/home.html',
+                    controller: 'RoomController',
+                    controllerAs: 'rm'
+                },
+                'viewEvent@home': {
                     controller: 'EventController',
                     controllerAs: 'vm'
-                },
+                }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
