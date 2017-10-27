@@ -5,9 +5,9 @@
         .module('conference3App')
         .controller('EventController', EventController);
 
-    EventController.$inject = ['Event', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    EventController.$inject = ['Event', 'ParseLinks', 'AlertService', 'paginationConstants', 'getCurrentUserEvents'];
 
-    function EventController(Event, ParseLinks, AlertService, paginationConstants) {
+    function EventController(Event, ParseLinks, AlertService, paginationConstants, getCurrentUserEvents) {
 
         var vm = this;
 
@@ -61,5 +61,10 @@
             vm.page = page;
             loadAll();
         }
+
+        getCurrentUserEvents.get(function (result) {
+                console.log(result)
+            }
+        );
     }
 })();

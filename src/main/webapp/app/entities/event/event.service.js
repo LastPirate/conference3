@@ -2,9 +2,11 @@
     'use strict';
     angular
         .module('conference3App')
-        .factory('Event', Event);
+        .factory('Event', Event)
+        .factory('getCurrentUserEvents', getCurrentUserEvents);
 
     Event.$inject = ['$resource', 'DateUtils'];
+    getCurrentUserEvents.$inject = ['$resource'];
 
     function Event ($resource, DateUtils) {
         var resourceUrl =  'api/events/:id';
@@ -25,4 +27,22 @@
             'update': { method:'PUT' }
         });
     }
+
+    function getCurrentUserEvents ($resource) {
+        var resourceUrl =  'api/events/currentUser';
+
+        return $resource(resourceUrl, {}, {
+            'get': {
+                method: 'GET',
+                isArray: true,
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+        });
+    }
+
 })();

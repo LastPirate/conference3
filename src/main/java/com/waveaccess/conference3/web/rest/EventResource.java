@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.waveaccess.conference3.domain.Event;
 
 import com.waveaccess.conference3.repository.EventRepository;
+import com.waveaccess.conference3.security.SecurityUtils;
 import com.waveaccess.conference3.web.rest.errors.BadRequestAlertException;
 import com.waveaccess.conference3.web.rest.util.HeaderUtil;
 import com.waveaccess.conference3.web.rest.util.PaginationUtil;
@@ -130,6 +131,14 @@ public class EventResource {
         Page<Event> page = eventRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/events");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/events/currentUser")
+    @Timed
+    public List<Event> getCurrentUserEvents() {
+        log.debug("REST request to get all events of current user: {}", SecurityUtils.getCurrentUserLogin());
+        List<Event> currentEvents = eventRepository.getCurrentUserEvents(SecurityUtils.getCurrentUserLogin());
+        return currentEvents;
     }
 
     /**

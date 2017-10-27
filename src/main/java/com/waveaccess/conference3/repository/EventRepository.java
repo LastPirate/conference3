@@ -1,9 +1,12 @@
 package com.waveaccess.conference3.repository;
 
 import com.waveaccess.conference3.domain.Event;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -13,4 +16,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
+    @Query(value = "select * from event where id in (select event_id from visit where user_id =" +
+        " (select id from jhi_user where login =:userLogin) and presenter_status=true)", nativeQuery = true)
+    List<Event> getCurrentUserEvents(@Param("userLogin") String userLogin);
 }
