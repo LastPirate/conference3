@@ -63,21 +63,25 @@ public class EventResource {
     @Timed
     public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) throws URISyntaxException {
         log.debug("REST request to save Event : {}", event);
-        if (event.getId() != null) {
-            throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+
+        currentStart = event.getStart().withZoneSameInstant(ZoneId.of("Z"));
+        currentStop = event.getEnd().withZoneSameInstant(ZoneId.of("Z"));
+
+        if (event.getId() != null) throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");
+        if (currentStart.isAfter(currentStop)) throw new BadRequestAlertException("The start time can not be later than the end", ENTITY_NAME, "badstarttime");
+        if (currentStart.isBefore(ZonedDateTime.now(ZoneId.of("Z")))) throw new BadRequestAlertException("The start time can not before current time", ENTITY_NAME, "startbefore");
+
         isCorrect = true;
         List<Event> all = eventRepository.findAll();
+
         for (Event partAll : all) {
             if (event.getRoom().getNumber() == partAll.getRoom().getNumber()) {
 
-                currentStart = event.getStart().withZoneSameInstant(ZoneId.of("Z"));
-                currentStop = event.getEnd().withZoneSameInstant(ZoneId.of("Z"));
                 pastStart = partAll.getStart().withZoneSameInstant(ZoneId.of("Z"));
                 pastStop = partAll.getEnd().withZoneSameInstant(ZoneId.of("Z"));
 
-                if ((currentStart.isAfter(pastStart) && currentStart.isBefore(pastStop)) |
-                    (currentStop.isAfter(pastStart) && currentStop.isBefore(pastStop))) {
+                if (pastStart.isAfter(currentStart) && pastStart.isBefore(currentStop) ||
+                    pastStop.isAfter(currentStart) && pastStop.isBefore(currentStop)) {
                     isCorrect = false;
                     break;
                 }
@@ -88,7 +92,7 @@ public class EventResource {
             return ResponseEntity.created(new URI("/api/events/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
                 .body(result);
-        } else throw new BadRequestAlertException("This audience is already busy at this time", ENTITY_NAME, "idexists");
+        } else throw new BadRequestAlertException("This room is busy at this time", ENTITY_NAME, "idexists");
     }
 
     /**
