@@ -16,19 +16,22 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/visit/visit-dialog.html',
+                    templateUrl: 'app/join/join.html',
                     controller: 'JoinDialogController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('event');
                     $translatePartialLoader.addPart('visit');
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }],
                 entity: function () {
                     return {
-                        presenterStatus: null,
+                        start: null,
+                        end: null,
                         id: null
                     };
                 }

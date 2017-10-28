@@ -5,43 +5,52 @@
         .module('conference3App')
         .controller('JoinDialogController', JoinDialogController);
 
-    JoinDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'entity', 'Visit', 'User', 'Event'];
+    JoinDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'entity', 'Event', 'Visit', 'Room', 'Presentation'];
 
-    function JoinDialogController ($timeout, $scope, $state, $stateParams, entity, Visit, User, Event) {
+    function JoinDialogController ($timeout, $scope, $state, $stateParams, entity, Event, Visit, Room, Presentation) {
         var vm = this;
 
-        vm.visit = entity;
+        vm.event = entity;
         vm.clear = clear;
+        vm.datePickerOpenStatus = {};
+        vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.users = User.query();
-        vm.events = Event.query();
+        vm.visits = Visit.query();
+        vm.rooms = Room.query();
+        vm.presentations = Presentation.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
 
         function clear () {
-            $state.go('home', null, { reload: 'visit' });
+            $state.go('home', {}, { reload: true });
         }
 
         function save () {
             vm.isSaving = true;
-            if (vm.visit.id !== null) {
-                Visit.update(vm.visit, onSaveSuccess, onSaveError);
+            if (vm.event.id !== null) {
+                Event.update(vm.event, onSaveSuccess, onSaveError);
             } else {
-                Visit.save(vm.visit, onSaveSuccess, onSaveError);
+                Event.save(vm.event, onSaveSuccess, onSaveError);
             }
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('conference3App:visitUpdate', result);
+            $scope.$emit('conference3App:eventUpdate', result);
+            $state.go('home', {}, { reload: true });
             vm.isSaving = false;
-            $state.go('join', null, { reload: 'visit' });
         }
 
         function onSaveError () {
             vm.isSaving = false;
         }
 
+        vm.datePickerOpenStatus.start = false;
+        vm.datePickerOpenStatus.end = false;
+
+        function openCalendar (date) {
+            vm.datePickerOpenStatus[date] = true;
+        }
     }
 })();
