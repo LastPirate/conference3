@@ -90,10 +90,12 @@ public class EventResource {
         }
         if (isCorrect) {
             Event result = eventRepository.save(event);
+            long maxID = eventRepository.getMaxVisitId()+1;
+            eventRepository.createPresenterVisit(SecurityUtils.getCurrentUserLogin(),event.getId(),maxID);
             return ResponseEntity.created(new URI("/api/events/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
                 .body(result);
-        } else throw new BadRequestAlertException("This room is busy at this time", ENTITY_NAME, "idexists");
+        } else throw new BadRequestAlertException("This room is busy at this time", ENTITY_NAME, "roomexists");
     }
 
     /**

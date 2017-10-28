@@ -127,7 +127,8 @@
         "emailexists": "Email is already in use!",
         "idexists": "A new {{ entityName }} cannot already have an ID",
         "badstarttime": "The start time can not be later than the end",
-        "startbefore": "The start time can not before current time"
+        "startbefore": "The start time can not before current time",
+        "roomexists": "This room is busy at this time"
     },
     "footer": "This is your footer"
 }
