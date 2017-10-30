@@ -3,9 +3,11 @@
 
     angular
         .module('conference3App')
-        .factory('User', User);
+        .factory('User', User)
+        .factory('joinCurrentUserProperties', joinCurrentUserProperties);
 
     User.$inject = ['$resource'];
+    joinCurrentUserProperties.$inject = ['$resource'];
 
     function User ($resource) {
         var service = $resource('api/users/:login', {}, {
@@ -23,5 +25,22 @@
         });
 
         return service;
+    }
+
+    function joinCurrentUserProperties ($resource) {
+        var resourceUrl =  'api//users/authCurrentUser';
+
+        return $resource(resourceUrl, {}, {
+            'get': {
+                method: 'GET',
+                isArray: true,
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+        });
     }
 })();

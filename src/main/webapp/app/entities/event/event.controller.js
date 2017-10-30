@@ -5,9 +5,9 @@
         .module('conference3App')
         .controller('EventController', EventController);
 
-    EventController.$inject = ['Event', 'ParseLinks', 'AlertService', 'paginationConstants', 'getCurrentUserEvents'];
+    EventController.$inject = ['$scope', 'Event', 'ParseLinks', 'AlertService', 'paginationConstants', 'getCurrentUserEvents'];
 
-    function EventController(Event, ParseLinks, AlertService, paginationConstants, getCurrentUserEvents) {
+    function EventController($scope, Event, ParseLinks, AlertService, paginationConstants, getCurrentUserEvents) {
 
         var vm = this;
 
@@ -22,10 +22,38 @@
         vm.reset = reset;
         vm.reverse = true;
 
-        vm.currentEvents = getCurrentUserEvents.get(function (result) {
+        $scope.currentEvents = getCurrentUserEvents.get(function (result) {
                 console.log(result)
             }
         );
+
+        $scope.joinable=function (eventCollections, key, value) {
+            var result=[];
+            for (var i = 0, count = eventCollections.length; i < count; i++) {
+                if (key == "presentation" && value == eventCollections[i].presentation.title) result[result.length]=eventCollections[i];
+                if (key == "room" && value == eventCollections[i].room.number) result[result.length]=eventCollections[i];
+                if (key == "time" && value == eventCollections[i].start) result[result.length]=eventCollections[i];
+            }
+            return result;
+        };
+
+        $scope.uniqueValues = function (eventCollections, paramOfEvent) {
+            var result=[];
+            for (var i = 0, count = eventCollections.length; i < count; i++) {
+                var unique = true;
+                for (var j = 0, countResult = result.length; j < countResult; j++) {
+                    if (paramOfEvent == "presentation" && eventCollections[i].presentation.title == result[j]) unique = false;
+                    if (paramOfEvent == "room" && eventCollections[i].room.number == result[j]) unique = false;
+                    if (paramOfEvent == "time" && eventCollections[i].start == result[j]) unique = false;
+                }
+                if (unique) {
+                    if (paramOfEvent == "presentation") result[result.length] = eventCollections[i].presentation.title;
+                    if (paramOfEvent == "room") result[result.length] = eventCollections[i].room.number;
+                    if (paramOfEvent == "time") result[result.length] = eventCollections[i].start;
+                }
+            }
+            return result;
+        };
 
         loadAll();
 

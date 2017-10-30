@@ -5,19 +5,28 @@
         .module('conference3App')
         .controller('JoinDialogController', JoinDialogController);
 
-    JoinDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'entity', 'Event', 'Visit', 'Room', 'Presentation'];
+    JoinDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'entity', 'Visit', 'User', 'Event', 'joinCurrentUserProperties'];
 
-    function JoinDialogController ($timeout, $scope, $state, $stateParams, entity, Event, Visit, Room, Presentation) {
+    function JoinDialogController ($timeout, $scope, $state, $stateParams, entity, Visit, User, Event, joinCurrentUserProperties) {
         var vm = this;
 
-        vm.event = entity;
+        vm.visit = entity;
         vm.clear = clear;
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.visits = Visit.query();
-        vm.rooms = Room.query();
-        vm.presentations = Presentation.query();
+        vm.users = User.query();
+        vm.events = Event.query();
+        vm.userProperties = joinCurrentUserProperties.get(function (result) {
+                console.log(result)
+            }
+        );
+
+        $scope.getUserJson = function () {
+            var result;
+            for (var i =0, count = vm.users.length; i < count; i++) {
+                if (vm.users[i].id == vm.userProperties[0]) result = vm.users[i];
+            }
+            return result;
+        };
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -28,16 +37,17 @@
         }
 
         function save () {
+            vm.users.get
             vm.isSaving = true;
-            if (vm.event.id !== null) {
-                Event.update(vm.event, onSaveSuccess, onSaveError);
+            if (vm.visit.id !== null) {
+                Visit.update(vm.visit, onSaveSuccess, onSaveError);
             } else {
-                Event.save(vm.event, onSaveSuccess, onSaveError);
+                Visit.save(vm.visit, onSaveSuccess, onSaveError);
             }
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('conference3App:eventUpdate', result);
+            $scope.$emit('conference3App:visitUpdate', result);
             $state.go('home', {}, { reload: true });
             vm.isSaving = false;
         }
@@ -46,11 +56,5 @@
             vm.isSaving = false;
         }
 
-        vm.datePickerOpenStatus.start = false;
-        vm.datePickerOpenStatus.end = false;
-
-        function openCalendar (date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();

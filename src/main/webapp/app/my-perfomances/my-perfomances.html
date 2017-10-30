@@ -33,7 +33,7 @@
                 </tr>
                 </thead>
                 <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="event in vm.currentEvents track by event.id">
+                <tr ng-repeat="event in currentEvents track by event.id">
                     <td><a ui-sref="event-detail({id:event.id})">{{event.id}}</a></td>
                     <td>{{event.start | date:'medium'}}</td>
                     <td>{{event.end | date:'medium'}}</td>

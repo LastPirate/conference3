@@ -2,9 +2,11 @@ package com.waveaccess.conference3.web.rest;
 
 import com.waveaccess.conference3.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.waveaccess.conference3.domain.Authority;
 import com.waveaccess.conference3.domain.User;
 import com.waveaccess.conference3.repository.UserRepository;
 import com.waveaccess.conference3.security.AuthoritiesConstants;
+import com.waveaccess.conference3.security.SecurityUtils;
 import com.waveaccess.conference3.service.MailService;
 import com.waveaccess.conference3.service.UserService;
 import com.waveaccess.conference3.service.dto.UserDTO;
@@ -17,6 +19,7 @@ import com.waveaccess.conference3.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 
+import javafx.beans.binding.SetBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -28,6 +31,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -176,6 +180,14 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLogin(login)
                 .map(UserDTO::new));
+    }
+
+    @GetMapping("/users/authCurrentUser")
+    @Timed
+    public UserDTO joinCurrentUserProperties() {
+        log.debug("Get join current user properties: {}", SecurityUtils.getCurrentUserLogin());
+        UserDTO current = this.getUser(SecurityUtils.getCurrentUserLogin()).getBody();
+        return current;
     }
 
     /**
