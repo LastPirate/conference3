@@ -28,12 +28,12 @@
     }
 
     function joinCurrentUserProperties ($resource) {
-        var resourceUrl =  'api//users/authCurrentUser';
+        var resourceUrl =  'api/users/authCurrentUser';
 
         return $resource(resourceUrl, {}, {
             'get': {
                 method: 'GET',
-                isArray: true,
+                isArray: false,
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);

@@ -1,5 +1,5 @@
 <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
-    
+
     <div ng-controller="EventController as ec">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -13,7 +13,7 @@
                 <select class="form-control" id="field_presentation" name="presentation" ng-model="selectPresentation"
                         ng-options="presentation for presentation in uniqueValues(ec.events, 'presentation')"
                         ng-change="firstSample = joinable(ec.events, 'presentation', selectPresentation); selectRoom = ''; selectStart = '';
-                        secondSample= []; vm.visit.event = null; vm.visit.user = getUserJson()"
+                        secondSample= []; vm.visit.event = null; vm.visit.user = vm.userProperties"
                         required>
                     <option value=""></option>
                 </select>
