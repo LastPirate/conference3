@@ -31,7 +31,7 @@ public class Event implements Serializable {
     @Column(name = "jhi_end", nullable = false)
     private ZonedDateTime end;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "event", cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
     @JsonIgnore
     private Set<Visit> visits = new HashSet<>();
 

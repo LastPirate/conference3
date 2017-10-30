@@ -90,7 +90,7 @@ public class EventResource {
         }
         if (isCorrect) {
             Event result = eventRepository.save(event);
-            long maxID = eventRepository.getMaxVisitId()+1;
+            long maxID = eventRepository.getMaxVisitId() != null ? eventRepository.getMaxVisitId()+1 : 0;
             eventRepository.createPresenterVisit(SecurityUtils.getCurrentUserLogin(),event.getId(),maxID);
             return ResponseEntity.created(new URI("/api/events/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
