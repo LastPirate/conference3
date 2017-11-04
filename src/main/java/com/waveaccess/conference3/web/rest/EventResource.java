@@ -73,19 +73,16 @@ public class EventResource {
         if (currentStart.isBefore(ZonedDateTime.now(ZoneId.of("Z")))) throw new BadRequestAlertException("The start time can not before current time", ENTITY_NAME, "startbefore");
 
         isCorrect = true;
-        List<Event> all = eventRepository.findAll();
+        List<Event> all = eventRepository.findAllByRoom(event.getRoom().getId());
 
         for (Event partAll : all) {
-            if (event.getRoom().getNumber() == partAll.getRoom().getNumber()) {
+            pastStart = partAll.getStart().withZoneSameInstant(ZoneId.of("Z"));
+            pastStop = partAll.getEnd().withZoneSameInstant(ZoneId.of("Z"));
 
-                pastStart = partAll.getStart().withZoneSameInstant(ZoneId.of("Z"));
-                pastStop = partAll.getEnd().withZoneSameInstant(ZoneId.of("Z"));
-
-                if (pastStart.isAfter(currentStart) && pastStart.isBefore(currentStop) ||
-                    pastStop.isAfter(currentStart) && pastStop.isBefore(currentStop)) {
-                    isCorrect = false;
-                    break;
-                }
+            if (pastStart.isAfter(currentStart) && pastStart.isBefore(currentStop) ||
+                pastStop.isAfter(currentStart) && pastStop.isBefore(currentStop)) {
+                isCorrect = false;
+                break;
             }
         }
         if (isCorrect) {

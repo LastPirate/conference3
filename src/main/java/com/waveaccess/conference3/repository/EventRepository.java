@@ -29,4 +29,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "insert into visit values ( :maxID, true, (select id from jhi_user where login =:userLogin), :eventID)",nativeQuery = true)
     void createPresenterVisit(@Param("userLogin") String userLogin,@Param("eventID") Long eventID, @Param("maxID") Long maxID);
 
+    @Query (value = "select * from event where room_id = :roomID", nativeQuery = true)
+    List<Event> findAllByRoom(@Param("roomID") Long roomID);
 }

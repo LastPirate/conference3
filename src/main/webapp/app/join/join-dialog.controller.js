@@ -16,17 +16,9 @@
         vm.users = User.query();
         vm.events = Event.query();
         vm.userProperties = joinCurrentUserProperties.get(function (result) {
-                console.log(result)
+               return result;
             }
         );
-
-        $scope.getUserJson = function () {
-            var result;
-            for (var i =0, count = vm.users.length; i < count; i++) {
-                if (vm.users[i].id == vm.userProperties[0]) result = vm.users[i];
-            }
-            return result;
-        };
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
