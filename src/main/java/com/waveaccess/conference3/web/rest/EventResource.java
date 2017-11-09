@@ -3,7 +3,9 @@ package com.waveaccess.conference3.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.waveaccess.conference3.domain.Event;
 
+import com.waveaccess.conference3.domain.Visit;
 import com.waveaccess.conference3.repository.EventRepository;
+import com.waveaccess.conference3.repository.VisitRepository;
 import com.waveaccess.conference3.security.SecurityUtils;
 import com.waveaccess.conference3.web.rest.errors.BadRequestAlertException;
 import com.waveaccess.conference3.web.rest.util.HeaderUtil;
@@ -13,7 +15,6 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,10 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 
 /**
  * REST controller for managing Event.
@@ -44,9 +42,11 @@ public class EventResource {
     private static final String ENTITY_NAME = "event";
 
     private final EventRepository eventRepository;
+    private final VisitRepository visitRepository;
 
-    public EventResource(EventRepository eventRepository) {
+    public EventResource(EventRepository eventRepository, VisitRepository visitRepository) {
         this.eventRepository = eventRepository;
+        this.visitRepository = visitRepository;
     }
 
     /**
@@ -69,11 +69,24 @@ public class EventResource {
         currentStop = event.getEnd().withZoneSameInstant(ZoneId.of("Z"));
 
         if (event.getId() != null) throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");
-        if (currentStart.isAfter(currentStop)) throw new BadRequestAlertException("The start time can not be later than the end", ENTITY_NAME, "badstarttime");
+        validate(event);
+
+        if (isCorrect) {
+            Event result = eventRepository.save(event);
+            long maxID = visitRepository.findTopByOrderByIdDesc().map(Visit::getId).orElse(new Long(-1));
+            visitRepository.createPresenterVisit(SecurityUtils.getCurrentUserLogin(),event.getId(),maxID+1);
+            return ResponseEntity.created(new URI("/api/events/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        } else throw new BadRequestAlertException("This room is busy at this time", ENTITY_NAME, "roomexists");
+    }
+
+    private void validate(@Valid @RequestBody Event event) {
+        if (currentStart.isAfter(currentStop) || currentStart.isEqual(currentStop)) throw new BadRequestAlertException("The start time can not be later than the end", ENTITY_NAME, "badstarttime");
         if (currentStart.isBefore(ZonedDateTime.now(ZoneId.of("Z")))) throw new BadRequestAlertException("The start time can not before current time", ENTITY_NAME, "startbefore");
 
         isCorrect = true;
-        List<Event> all = eventRepository.findAllByRoom(event.getRoom().getId());
+        List<Event> all = eventRepository.findEventsByRoom(event.getRoom());
 
         for (Event partAll : all) {
             pastStart = partAll.getStart().withZoneSameInstant(ZoneId.of("Z"));
@@ -81,18 +94,12 @@ public class EventResource {
 
             if (pastStart.isAfter(currentStart) && pastStart.isBefore(currentStop) || pastStop.isAfter(currentStart) && pastStop.isBefore(currentStop) ||
                 pastStop.isEqual(currentStop) || pastStop.isEqual(currentStart) || pastStart.isEqual(currentStart) || pastStart.isEqual(currentStop)) {
-                isCorrect = false;
-                break;
+                if (event.getId() == null || !event.getId().equals(partAll.getId())) {
+                    isCorrect = false;
+                    break;
+                }
             }
         }
-        if (isCorrect) {
-            Event result = eventRepository.save(event);
-            long maxID = eventRepository.getMaxVisitId() != null ? eventRepository.getMaxVisitId()+1 : 0;
-            eventRepository.createPresenterVisit(SecurityUtils.getCurrentUserLogin(),event.getId(),maxID);
-            return ResponseEntity.created(new URI("/api/events/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-                .body(result);
-        } else throw new BadRequestAlertException("This room is busy at this time", ENTITY_NAME, "roomexists");
     }
 
     /**
@@ -108,13 +115,19 @@ public class EventResource {
     @Timed
     public ResponseEntity<Event> updateEvent(@Valid @RequestBody Event event) throws URISyntaxException {
         log.debug("REST request to update Event : {}", event);
-        if (event.getId() == null) {
-            return createEvent(event);
-        }
-        Event result = eventRepository.save(event);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, event.getId().toString()))
-            .body(result);
+
+        currentStart = event.getStart().withZoneSameInstant(ZoneId.of("Z"));
+        currentStop = event.getEnd().withZoneSameInstant(ZoneId.of("Z"));
+
+        if (event.getId() == null) return createEvent(event);
+        validate(event);
+
+        if (isCorrect) {
+            Event result = eventRepository.save(event);
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, event.getId().toString()))
+                .body(result);
+        } else throw new BadRequestAlertException("This room is busy at this time", ENTITY_NAME, "roomexists");
     }
 
     /**

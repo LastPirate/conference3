@@ -54,7 +54,7 @@ public class VisitResource {
         log.debug("REST request to save Visit : {}", visit);
         if (visit.getId() != null) throw new BadRequestAlertException("A new visit cannot already have an ID", ENTITY_NAME, "idexists");
         for (Visit buffer : visitRepository.findByUserIsCurrentUser()) {
-            if (visit.getEvent().getId() == buffer.getEvent().getId()) throw new BadRequestAlertException("User already subscribed to this event", ENTITY_NAME, "subscribed");
+            if (visit.getEvent().getId().equals(buffer.getEvent().getId())) throw new BadRequestAlertException("User already subscribed to this event", ENTITY_NAME, "subscribed");
         }
         Visit result = visitRepository.save(visit);
         return ResponseEntity.created(new URI("/api/visits/" + result.getId()))
