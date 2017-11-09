@@ -29,7 +29,6 @@
         }
 
         function save () {
-            vm.users.get
             vm.isSaving = true;
             if (vm.visit.id !== null) {
                 Visit.update(vm.visit, onSaveSuccess, onSaveError);
@@ -47,6 +46,5 @@
         function onSaveError () {
             vm.isSaving = false;
         }
-
     }
 })();

@@ -79,8 +79,8 @@ public class EventResource {
             pastStart = partAll.getStart().withZoneSameInstant(ZoneId.of("Z"));
             pastStop = partAll.getEnd().withZoneSameInstant(ZoneId.of("Z"));
 
-            if (pastStart.isAfter(currentStart) && pastStart.isBefore(currentStop) ||
-                pastStop.isAfter(currentStart) && pastStop.isBefore(currentStop)) {
+            if (pastStart.isAfter(currentStart) && pastStart.isBefore(currentStop) || pastStop.isAfter(currentStart) && pastStop.isBefore(currentStop) ||
+                pastStop.isEqual(currentStop) || pastStop.isEqual(currentStart) || pastStart.isEqual(currentStart) || pastStart.isEqual(currentStop)) {
                 isCorrect = false;
                 break;
             }
