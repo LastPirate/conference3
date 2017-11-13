@@ -1,7 +1,7 @@
 <div>
     <div>
         <h4><span data-translate="conference3App.room.home.subtitle">My Room</span>: <input type="text" ng-model="roomFilter.number"> </h4>
-        <div ng-repeat="room in rm.rooms | filter: roomFilter">
+        <div ng-model="currentRoom.number = room.number" ng-repeat="room in rm.rooms | filter: roomFilter">
             <div ui-view="viewEvent">
                 <h2><span data-translate="conference3App.room.detail.title">Room</span> №{{room.number}}</h2>
                 <br/>
@@ -15,7 +15,7 @@
                         </tr>
                         </thead>
                         <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                        <tr ng-repeat="event in vm.events | filter: room.number">
+                        <tr ng-repeat="event in vm.events | filter:{room:currentRoom}">
                             <td>
                                 <div ui-sref="presentation-view({id:event.presentation.id})">{{event.presentation.title}}</div>
                             </td>
